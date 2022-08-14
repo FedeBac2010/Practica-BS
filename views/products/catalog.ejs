@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Include Head con CSS -->
+    <%- include("../partials/head") %>
+
+    <title>Catalog</title>
+  </head>
+  <body>
+    <!-- HEADER -->
+
+    <%- include("../partials/header") %>
+
+<!--Barra de navegacion celular-->
+<%-  include("../partials/bottomNav") %> 
+
+    <!--CATALOGO DE PRODUCTOS-->
+    <main>
+      <section>
+        <a href="./create"><button class="button">Agregar producto</button></a>
+        <div class="first-article">
+            <% for(let index=0; index < books.length; index++) { %>
+              <article>
+            <a href ="./detalle-producto/<%= books[index].id %>">
+            <h2 class="descripcion"><%= books[index].title %></h2></a>
+          <div class="image">  
+            <img
+              src="/img/uploads/<%=books[index].image[0] %>"
+              alt=""
+              class="barra"
+            />
+          </div>
+            <!-- Logo de like (corazon) -->
+            <div class="logo-like barra">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+
+            <!--Autor, categoria, descripcion y precio-->
+            <div class="contenido-libro">
+              <p class="autor"> <b>Autor:</b> <%= books[index].author %> </p>
+              <p class="categoria"><b>Categoria: </b> <%= books[index].category %> </p>
+              <p class="descripcion"><b>Descripcion:</b> <%= books[index].description %> </p>
+              <p class="precio"><b>Precio:</b> <%= books[index].currency %>  <%= books[index].price %> </p>
+            </div>
+              <div class="button">
+                <a href="/products/cart">Agregar al Carrito</a>
+              </div>
+          <!-- eliminar producto -->
+              <form
+                action="/products/<%= books[index].id %>?_method=DELETE" 
+                method="post"
+                >
+                <button type="submit" 
+                class="button"
+                >Eliminar</button>
+              </form>
+              <a href="./edit/<%= books[index].id  %> "><button type="submit" 
+              class="button"
+              >Editar</button></a>
+                <br />
+        </article>
+        <% } %>     
+              </div>     
+      </section>
+    </main>
+    <!-- Footer -->
+    <%- include("../partials/footer") %>
+  </body>
+</html>

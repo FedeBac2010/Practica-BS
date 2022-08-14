@@ -1,0 +1,22 @@
+[
+  {
+    "fullName": "andi",
+    "userName": "andi",
+    "userEmail": "andij@gmail.com",
+    "password": "$2b$10$JTWuYdFVCuyP9eNkuVe3vOXW1v0boFyN8JX7TfzuzbS7fa9yrLgQa",
+    "phoneNumber": "123456",
+    "city": "rosario",
+    "avatar": "1660183979100.jpg",
+    "id": 1
+  },
+  {
+    "id": 2,
+    "fullName": "Federico Bacigalupi",
+    "userName": "BELEZAS",
+    "userEmail": "bacigalaipa@gmail.com",
+    "password": "1234",
+    "phoneNumber": "03764655704",
+    "city": "Posadas",
+    "avatar": "1660403177988.jpg"
+  }
+]
