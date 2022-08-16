@@ -117,13 +117,24 @@ module.exports = {
     let userToLogin= User.findByfield ('userEmail', req.body.userEmail);
     
     if(userToLogin){
-      return res.send(userToLogin)
+      let okPassword= bcrypt.compareSync(req.body.password, userToLogin.password)
+      if(okPassword){
+        return res.send('ok podes ingresar')
+      }
+      return res.render("users/login", {
+        styles: "login.css",
+        errors:{
+          userEmail:{
+            msg: 'Las credenciales(email o contraseña) son invalidas'
+          }
+        }
+      })
     }
     return res.render("users/login", {
       styles: "login.css",
       errors:{
         userEmail:{
-          msg: 'no se encuentra este Email registrado en la basde de datos'
+          msg: 'no se encuentra este Email registrado en la base de de datos'
         }
       }
     })
