@@ -12,8 +12,10 @@ const { v4: uuidv4 } = require("uuid");
 const usersListPath = path.resolve(__dirname, "../data/users.json"); //Solicitamos el JSON con la lista de usuarios
 const usersList = JSON.parse(fs.readFileSync(usersListPath, "utf8")); //Leemos el Json y lo traducimos a JS
 
-const userModel = require('../models/User'); // Importamos archivo userModel
+/* const userModel = require('../models/User'); */ // Importamos archivo userModel
 
+const bcrypt = require('bcrypt');
+const User = require("../models/User");
 
 module.exports = {
   register: (req, res) => {
@@ -33,28 +35,35 @@ module.exports = {
       })
     }
     /* PROCESO DE CREACION */
-    let currentUser = req.body;
-    let listUsers = userModel.getData(); //OBTENEMOS LOS USUARIOS
+    let currentUser = req.body; //Lo que viene por registro
+    let listUsers = User.getData(); //OBTENEMOS LOS USUARIOS
     
-    const newUser = listUsers.find(user => {
-      if (user.userEmail == currentUser.userEmail) {
-        res.render("users/register", { 
-          styles: "register.css",
-          errors: "El email ya existe" });
-      }
-  });
-
-  if (! newUser) {
 
 	let userToCreate = {
     ...req.body,
+    password: bcrypt.hashSync(req.body.password, 10), //Encriptamos la contraseña
     avatar: req.file.filename //para subir la imagen
   }
 
-  let userCreated = userModel.create(userToCreate);
+  let userInDB= User.findByfield('userEmail', req.body.userEmail) //La variable almacena al usuario de acuerdo al campo (userEmail) que ya se encuentra registrado en la basde datos JSON
 
-  res.redirect('/');
-}
+  if (userInDB){
+    return res.render("users/register",{
+      styles: "register.css",
+      errors:{
+        userEmail:{
+          msg: 'Este email ya esta registrado'
+        }
+      },
+      oldData:req.body
+    })
+  }
+
+
+  let userCreated = User.create(userToCreate);
+
+  res.redirect('/users/login');
+
   },
 
   edit: (req, res) => {
@@ -103,6 +112,24 @@ module.exports = {
   login: (req, res) => {
     res.render("users/login", { styles: "login.css" });
   },
+
+  loginProcess: (req,res)=>{
+    let userToLogin= User.findByfield ('userEmail', req.body.userEmail);
+    
+    if(userToLogin){
+      return res.send(userToLogin)
+    }
+    return res.render("users/login", {
+      styles: "login.css",
+      errors:{
+        userEmail:{
+          msg: 'no se encuentra este Email registrado en la basde de datos'
+        }
+      }
+    })
+  },
+
+
   profile: (req, res) => {
     res.render("users/user", { styles: "catalog.css" });
   },

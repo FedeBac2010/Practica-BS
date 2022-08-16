@@ -23,9 +23,13 @@ router.post('/register', upload.single('avatar'), [validations] ,usersController
 router.get("/edit/:id", usersController.edit);
 router.put("/:id", usersController.updateUser)
 
-// RUTA INICIO DE SESION
+// RUTA DE LOGIN
 
 router.get('/login', usersController.login);
+
+// METODO QUE PROCESA EL LOGIN
+
+router.post('/login', usersController.loginProcess);
 
 // RUTA DE  PERFIL DE USUARIO
 
