@@ -119,7 +119,7 @@ module.exports = {
     if(userToLogin){
       let okPassword= bcrypt.compareSync(req.body.password, userToLogin.password)
       if(okPassword){
-        return res.send('ok podes ingresar')
+        return res.redirect('/users/profile')
       }
       return res.render("users/login", {
         styles: "login.css",
@@ -142,7 +142,7 @@ module.exports = {
 
 
   profile: (req, res) => {
-    res.render("users/user", { styles: "catalog.css" });
+    res.render("users/user", { styles: "user.css" });
   },
 
   AllProfiles: (req, res) => {
